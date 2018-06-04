@@ -11,9 +11,9 @@ contract Consortium{
   }
 
   struct Proposal{
-    bytes32 title; //short name
+    string title; //short name
     uint voteCount; //number of acumulated votes
-    string creator;
+    address creator;
     uint votes;
   }
 
@@ -31,23 +31,23 @@ contract Consortium{
     quota = 2000;
     numEntities = 0;
   }
+
    modifier onlyEntity(){
      require(entities[msg.sender]);
+     _;
    }
 
    function AddEntity() public {
-
    }
 
 
    function RemoveEntity() public  {
-
    }
 
-   function Propose(string title ) public onlyEntity  {
+   function Propose(string title) public onlyEntity  {
       require(actualProposal.creator != 0x0);
       actualProposal.creator = msg.sender;
-      actualProposal = title;
+      actualProposal.title = title;
 
    }
 
@@ -55,8 +55,8 @@ contract Consortium{
      require (actualProposal.votes[msg.sender]);
 
      actualProposal.votes[msg.sender] = true;
-     (positive) actualProposal.positive += 1;
-     actualProposal.negative += 1;
+
+
 
    }
 
