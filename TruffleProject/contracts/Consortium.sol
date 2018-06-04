@@ -11,30 +11,52 @@ contract Consortium{
   }
 
   struct Proposal{
-    bytes32 name; //short name
+    bytes32 title; //short name
     uint voteCount; //number of acumulated votes
+    string creator;
+    uint votes;
   }
 
   mapping (address => Voter) public voters;
-  mapping (address => uint) public entities;
+  mapping (address => bool) public entities;
 
   address public voterEntity;
   uint public quota;
   uint public numEntities;
 
   Proposal[] public proposals;
+  Proposal actualProposal;
 
   function Consortium(){
     quota = 2000;
     numEntities = 0;
   }
+   modifier onlyEntity(){
+     require(entities[msg.sender]);
+   }
 
-   function addEntity() public {
+   function AddEntity() public {
 
    }
 
 
-   function removeEntity() public  {
+   function RemoveEntity() public  {
+
+   }
+
+   function Propose(string title ) public onlyEntity  {
+      require(actualProposal.creator != 0x0);
+      actualProposal.creator = msg.sender;
+      actualProposal = title;
+
+   }
+
+   function Vote(bool positive) public onlyEntity {
+     require (actualProposal.votes[msg.sender]);
+
+     actualProposal.votes[msg.sender] = true;
+     (positive) actualProposal.positive += 1;
+     actualProposal.negative += 1;
 
    }
 
