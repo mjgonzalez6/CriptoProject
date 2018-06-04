@@ -38,7 +38,10 @@ contract Consortium{
    }
 
    function AddEntity() public {
+     entities[0] = true;
    }
+
+
 
 
    function RemoveEntity() public  {
@@ -52,11 +55,6 @@ contract Consortium{
    }
 
    function Vote(bool positive) public onlyEntity {
-     require (actualProposal.votes[msg.sender]);
-
-     actualProposal.votes[msg.sender] = true;
-
-
 
    }
 
