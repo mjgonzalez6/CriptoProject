@@ -1,4 +1,4 @@
-# Smart contract: Películas
+# Smart contract: PopCornSortium
 
 * Filtro de entrada al contrato: Un pago que será devuelto en persona en el cine (Para que no ingrese cualquier persona se le devuelve solo a los amigos)
 * Generar propuesta: el que la genera define parámetros y paga su entrada.
