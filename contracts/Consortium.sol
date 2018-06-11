@@ -33,19 +33,20 @@ function registerAddress() public payable {
     entryRefundAdresses.push(msg.sender);
 }
 
-function VoteNonExistentMovie(bytes32 name, uint cost) public {
+function VoteNonExistentMovie(bytes32 name) public payable {
   address[] voters;
   voters.push(msg.sender);
-  movieProposal memory newProposal = movieProposal(movieProposals.length, name, false, voters, cost);
+  alreadyVoted.push(msg.sender);
+  movieProposal memory newProposal = movieProposal(movieProposals.length, name, false, voters, msg.value);
   movieProposals.push(newProposal);
-  require(msg.value == cost);
+  require(msg.value > 0);
 }
 
 function viewMovieProposals() public returns (movieProposal[] movieProposals)
 {
  return movieProposals;
 }
-function VoteExistentMovie(uint idMovieProposal)
+function VoteExistentMovie(uint idMovieProposal) public payable
 {
     require(msg.value == movieProposals[idMovieProposal].ticketCost);
     bool isFriend = false;
@@ -55,22 +56,21 @@ function VoteExistentMovie(uint idMovieProposal)
         {
             isFriend = true;
             break;
-
         }
-        require(isFriend);
-        bool canVote = false;
-        for(uint j; j < alreadyVoted.length; j++)
+    }
+    require(isFriend);
+    bool canVote = true;
+    for(uint j; j < alreadyVoted.length; j++)
+    {
+        if(alreadyVoted[j] == msg.sender)
         {
-            if(alreadyVoted[j] == msg.sender)
-            {
-              canVote= true;
-              break;
-
-            }
-            require(canVote);
-            movieProposals[idMovieProposal].voters.push(msg.sender);
+          canVote = false;
+          break;
         }
-     }
+    }
+    require(canVote);
+    movieProposals[idMovieProposal].voters.push(msg.sender);
+    alreadyVoted.push(msg.sender);
       if(FriendAddresses.length-alreadyVoted.length == 0)
       {
           this.verifyWinner();
@@ -157,4 +157,13 @@ function getTotalAlreadyVoted() public view returns( uint ) {
     uint totalAlreadyVoted = alreadyVoted.length;
     return totalAlreadyVoted;
 }
+function getTotalMoviesProposals() public view returns ( uint ){
+    uint totalMoviesProposals = movieProposals.length;
+    return totalMoviesProposals;
+}
+function getTotalVoters(uint idMovieProposal) public view returns ( uint ){
+    uint totalVoters = movieProposals[idMovieProposal].voters.length;
+    return totalVoters;
+}
+
 }
