@@ -19,17 +19,13 @@ contract Consortium {
       }
 
 
-  constructor(uint _entryCost) public payable {
-      entryCost = _entryCost;
-      require(msg.value >=entryCost);
-      if(msg.value >= entryCost){
-      msg.sender.transfer(entryCost);
+  constructor() public payable {
+      require(msg.value > 0);
+      entryCost = msg.value;
  }
   FriendAddresses.push(msg.sender);
   entryRefundAdresses.push(msg.sender);
   }
-
-
 
   function registerAddress() public payable {
       require(msg.value >= entryCost);
