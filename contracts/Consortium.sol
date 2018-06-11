@@ -9,7 +9,6 @@ address[] public alreadyVoted;
 uint entryCost;
 
 
-
 struct movieProposal {
   uint id;
   bytes32 name;
@@ -18,16 +17,12 @@ struct movieProposal {
   uint ticketCost;
 }
 
-
 constructor() public payable {
       require(msg.value > 0);
-      entryCost = msg.value; 
+      entryCost = msg.value;
   FriendAddresses.push(msg.sender);
   entryRefundAdresses.push(msg.sender);
 }
-
-
-
 
 function registerAddress() public payable {
     require(msg.value >= entryCost);
@@ -38,7 +33,7 @@ function registerAddress() public payable {
     entryRefundAdresses.push(msg.sender);
 }
 
-function VoteNonExistentMovie(bytes32 name, uint cost ) public {
+function VoteNonExistentMovie(bytes32 name, uint cost) public {
   address[] voters;
   voters.push(msg.sender);
   movieProposal memory newProposal = movieProposal(movieProposals.length, name, false, voters, cost);
