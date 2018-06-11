@@ -4,7 +4,7 @@ contract Consortium {
 
 address[] public FriendAddresses;
 address[] public entryRefundAdresses;
-movieProposal[] movieProposals;
+movieProposal[] public movieProposals;
 address[] public alreadyVoted;
 uint entryCost;
 
@@ -103,8 +103,14 @@ function finishVotation()
         }
         else//propuesta ganadora
         {
-        this.refundToFriends(movieProposals[i].voters[0]);
-        this.payTickets(movieProposals[i].voters, movieProposals[i].ticketCost);
+
+          require(this.refundToFriends(movieProposals[i].voters[0]));
+          require(this.payTickets(movieProposals[i].voters, movieProposals[i].ticketCost));
+          for(uint j; j < movieProposals.length; j++)
+          {
+              delete movieProposals[j];
+          }
+
         }
     }
 }
@@ -112,21 +118,37 @@ function finishVotation()
 
 function verifyWinner()
 {
-    uint fiftyPlusOne = (uint(FriendAddresses.length)/2)+1;
+    uint fiftyPlusOne = getFiftyPlusOne();
     for(uint i; i< movieProposals.length; i++)
     {
         if(movieProposals[i].voters.length >= fiftyPlusOne)
         {
             movieProposals[i].isWinProposal = true;
+            break;
         }
-      }
-}
-function refund(address[] losers, uint cost) returns(bool)
-{
-    for(uint i; i < movieProposals.length; i++)
-    {
-        return losers[i].send(cost);
     }
+}
+
+function  getFiftyPlusOne() public view returns ( uint ){
+  uint number = ((FriendAddresses.length)/2);
+  if (2*(FriendAddresses.length/2) == FriendAddresses.length){
+    return number;
+  }
+  else
+  {
+    number++;
+    return number;
+  }
+}
+
+function refund(address[] losers, uint cost) returns(bool success)
+{
+    success = false;
+    for(uint i; i < losers.length; i++)
+    {
+        success = losers[i].send(cost);
+    }
+    return success;
 }
 
 
@@ -138,6 +160,7 @@ function payTickets(address[] voters, uint cost) returns(bool)
 function refundToFriends(address organizer) returns(bool success)
 {
     success = organizer.send(entryRefundAdresses.length * entryCost);
+    require(success);
     for(uint i; i<entryRefundAdresses.length; i++)
     {
         delete entryRefundAdresses[i];
@@ -164,6 +187,10 @@ function getTotalMoviesProposals() public view returns ( uint ){
 function getTotalVoters(uint idMovieProposal) public view returns ( uint ){
     uint totalVoters = movieProposals[idMovieProposal].voters.length;
     return totalVoters;
+}
+function getIsWinProposal(uint idMovieProposal) public view returns ( bool ){
+    bool isWinProposal = movieProposals[idMovieProposal].isWinProposal;
+    return isWinProposal;
 }
 
 }

@@ -59,6 +59,33 @@ it("should can vote for existing movie", () => {
   });
 });
 
+/* it("should can finish a winner movie proposal by everyone voted", () => {
+  return Consortium.new({value: 100, from:  accounts[4]}).then(instance => {
+  instance.VoteNonExistentMovie("avengers",{ from: accounts[4], value: 500 });
+  instance.registerAddress({ from: accounts[5], value: 100});
+  instance.VoteExistentMovie(0,{ from: accounts[5], value: 500});
+  return instance.getTotalMoviesProposals();
+  }).then( totalMoviesProposals => {
+    assert.equal(totalMoviesProposals, 0, "Was not possible to finish a winner movie proposal by everyone voted");
+  });
+}); */
+
+it("should divide correctly", () => {
+  return Consortium.new({value: 100, from:  accounts[4]}).then(instance => {
+  instance.VoteNonExistentMovie("avengers",{ from: accounts[4], value: 500 });
+  instance.registerAddress({ from: accounts[5], value: 100});
+  instance.registerAddress({ from: accounts[6], value: 100});
+  instance.registerAddress({ from: accounts[7], value: 100});
+  instance.registerAddress({ from: accounts[8], value: 100});
+  return instance.getFiftyPlusOne();
+  }).then(number => {
+    assert.equal(number,3,"Was not possible to can verify winner movieProposal");
+  });
+});
+
+
+
+
 
 
 
