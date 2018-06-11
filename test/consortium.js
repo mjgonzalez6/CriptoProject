@@ -13,4 +13,4 @@ contract('Consortium', accounts => {
 
 
 
-}
+});
