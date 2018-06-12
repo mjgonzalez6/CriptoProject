@@ -1,10 +1,11 @@
 # Smart contract: PopCornSortium
 
 ## Introducción
-Este smart contract es un consorcio desarrollado sobre el lenguaje de programación solidity dirigido al uso entre un grupo de amigos que desean organizar una salida al cine proponiendo y votando entre un conjunto de películas, definiendo el respectivo pago.
+Este smart contract es un consorcio desarrollado sobre el lenguaje de programación solidity dirigido al uso entre un grupo de amigos que desean organizar una salida al cine proponiendo y votando entre un conjunto de películas, definiendo y realizando el respectivo pago.
 
 ## Reglas
-* Filtro de entrada al contrato: Cada persona que ingresa al contrato deberá realizar un pago que será definido por quien crea el contrato y que posteriormente será devuelto sólo a los amigos por el organizador durante la salida al cine.
+* Filtro de entrada al contrato: 
+* Cada persona que ingresa al contrato deberá realizar un pago que será definido por quien crea el contrato y que posteriormente será devuelto sólo a los amigos por el organizador durante la salida al cine.
 * Generar propuesta:
 * Para proponer una película el usuario organizador debe definir los parámetros nombre de pelicula y el valor de la entrada realizando el pago de esta misma.
 * Votar propuesta: 
